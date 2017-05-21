@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title> Home Page </title>
+   <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+   <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+   <script type="text/javascript" src="js/commonFunctions.js"></script>
+   <script type="text/javascript" src="js/main.js"></script>
+   <style type="text/css">
+   .headerboxed {
+     border: 1px solid rgb(135, 228, 231);
+     background-color: rgb(215, 250, 251);
+   }
+   .boxed {
+     border: 1px solid rgb(215, 250, 251);
+      background-color: rgb(237, 254, 255);
+   }
+   </style>
+
+
+</head>
+<body>
+
+  <div data-role="page" class="jqm-demos ui-responsive-panel" id="active">
+     <div data-role="header">
+          <h1>TandaKlub</h1>
+          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <div data-role="navbar">
+            <ul>
+              <li><a href="#" class="ui-btn-active ui-state-persist">ACTIVAS</a></li>
+              <li><a href="#pending">PENDIENTES</a></li>
+              <li><a href="#closed">CERRADAS</a></li>
+            </ul>
+          </div>
+          <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-position="right"></a>
+     </div>
+
+     <div data-role="main"class="ui-content jqm-content jqm-fullwidth">
+       <div data-role="fieldcontain" data-type="horizontal" id="actwarningPlaceHolder">
+       </div>
+        <h3>Tandas en las que participo:</h3>
+        <div class="headerboxed">
+        <div data-role="collapsible-set" id="activeTandas">
+        </div>
+        </div>
+     </div>
+     <div data-role="footer">
+       <h2>&copy; TandaKlub Corp 2017</h2>
+     </div>
+  </div>
+
+  <div data-role="page" class="jqm-demos ui-responsive-panel" id="pending">
+     <div data-role="header">
+          <h1>TandaKlub</h1>
+          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <div data-role="navbar">
+            <ul>
+              <li><a href="#active">ACTIVAS</a></li>
+              <li><a href="#" class="ui-btn-active ui-state-persist">PENDIENTES</a></li>
+              <li><a href="#closed">CERRADAS</a></li>
+            </ul>
+          </div>
+          <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-positon ="right"></a>
+     </div>
+
+     <div data-role="main"class="ui-content">
+       <div data-role="fieldcontain" data-type="horizontal" id="penwarningPlaceHolder">
+       </div>
+        <h3>Tandas que he creado:</h3>
+          <div data-role="collapsible-set"id="penCrtedTandas">
+          </div>
+        <h3>Tandas en las que he sido invitado</h3>
+        <div data-role="collapsible-set" id="penInvtedTandas">
+        </div>
+
+     </div>
+     <div data-role="footer">
+       <h2>&copy; TandaKlub Corp 2017</h2>
+     </div>
+  </div>
+
+  <div data-role="page" class="jqm-demos ui-responsive-panel" id="closed">
+     <div data-role="header">
+          <h1>TandaKlub</h1>
+          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <div data-role="navbar">
+            <ul>
+              <li><a href="#active">ACTIVAS</a></li>
+              <li><a href="#pending">PENDIENTES</a></li>
+              <li><a href="#" class="ui-btn-active ui-state-persist">CERRADAS</a></li>
+            </ul>
+          </div>
+          <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-position = "right"></a>
+     </div>
+     <div data-role="main"class="ui-content">
+       <div data-role="fieldcontain" data-type="horizontal" id="closdwarningPlaceHolder">
+       </div>
+        <h3>Tandas que ya terminaron:</h3>
+        <div data-role="collapsible-set" id="closdTandas">
+        </div>
+     </div>
+     <div data-role="footer">
+       <h2>&copy; TandaKlub Corp 2017</h2>
+     </div>
+  </div>
+
+  <div data-role="panel" data-display="reveal" id="nav-panel" data-position="right">
+      <ul data-role="listview">
+          <li data-icon="delete"><a href="#active" data-rel="close">Cerrar</a></li>
+          <li><a href="userprofile.html" rel="external">Perfil</a></li>
+          <li><a href="settings.html" rel="external">Configuraciones</a></li>
+          <li><a href="javascript:logOut();" rel="external">Log Out</a></li>
+      </ul>
+  </div><!-- /panel -->
+</body>
+</html>
