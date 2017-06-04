@@ -64,7 +64,7 @@ $(document).on('pageshow', "#registeruser", function (event) {
              }
            }
            else {
-             window.localStorage.setItem("usrId", result.data);
+             window.localStorage.setItem("usrId", result.val);
              window.localStorage.setItem("usrEmail", _email);
              window.localStorage.setItem("usrPass", _pass);
              /* Check if We need to lunch Join Tanda page */

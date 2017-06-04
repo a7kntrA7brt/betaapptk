@@ -490,7 +490,7 @@ $( "#fnshcrt" ).click( function() {
  var userID = window.localStorage.getItem("usrId");
  var usrEmail = window.localStorage.getItem("usrEmail");
  var usrPass = window.localStorage.getItem("usrPass");
-
+ var propID;
   if (document.getElementById("checkbox-agree").checked)
   {
 
@@ -506,10 +506,9 @@ $( "#fnshcrt" ).click( function() {
      crossDomain: true,
      cache: false,
      success: function(data) {
-
-
        if (data.st == 1)
        {
+       propID = data.val;
        for(j=0 ; j< mailcontact.length; j++) {
 
          var dataString2 ="e="+usrEmail+"&p="+usrPass+"&id="+data.val+"&email="+ mailcontact[j]+"";
@@ -522,9 +521,22 @@ $( "#fnshcrt" ).click( function() {
             success: function(data) {
               guestAddedDB++;
               if (guestAddedDB ==  mailcontact.length) {
-                $.mobile.loading( "hide" );
-              window.location.href="main.html";
-              window.location.href.reload(true);
+                var dataString3 ="e="+usrEmail+"&p="+usrPass+"&id="+propID+"";
+                $.ajax({
+                 type: "POST",
+                 url:"http://tandaklub.com/set/confirm?"+dataString3+"",
+                 data: dataString,
+                 crossDomain: true,
+                 cache: false,
+                 success: function(data) {
+                   if (data.st == 1)
+                   {
+                          $.mobile.loading( "hide" );
+                          window.location.href="main.html";
+                          window.location.href.reload(true);
+                   }
+                 }
+                 });
              }
 
             }
@@ -549,16 +561,16 @@ function createSummary(_mP, _date, _payFreq, _chrg, _frnds, _mailcontact ) {
   var newRows="";
   var newfriendlist ="";
   if(_mP != null){
-    newRows+="<tr><th>Tanda:</th><td> "+_mP+" MXN</td>";
+    newRows+="<tr><th>Tanda:</th><td> "+_mP+" MXN</td></tr>";
   }
   if(_date != null ){
-    newRows+="<tr><th>Fecha de primer cobro:</th><td> "+_date+"</td>";
+    newRows+="<tr><th>Fecha de primer cobro:</th><td> "+_date+"</td></tr>";
   }
   if(_payFreq != null &&  _chrg != null){
-    newRows+="<tr><th>"+_payFreq+" Pago:</th><td> "+_chrg+" MXN</td>";
   }
+  newRows+="<tr><th>"+_payFreq+" Pago:</th><td> "+_chrg+" MXN</td></tr>";
   if(_frnds != null ){
-    newRows+="<tr><th>Participantes necesarios:</th><td> "+_frnds+"</td>";
+    newRows+="<tr><th>Participantes necesarios:</th><td> "+_frnds+"</td></tr>";
   }
   for(var l = 0; l < _mailcontact.length ; l++) {
         newfriendlist+="<li>"+_mailcontact[l]+"</li>";

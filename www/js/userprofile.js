@@ -1,23 +1,32 @@
-$(document).on("pageshow","#settings",function() {
-   var usrname;
-   var email;
-   var db;
-   var bankinfo;
+$(document).on("pageshow","#profile",function() {
+   var usrPass;
+   var usrEmail;
 
-   var stat = true;
+   usrEmail = window.localStorage.getItem("usrEmail");
+   usrPass = window.localStorage.getItem("usrPass");
 
-   db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
-   db.transaction(function (tx) {
-      tx.executeSql('SELECT * FROM PROFILE', [], function (tx, results) {
-         for(var i = 0; i < results.rows.length; i++) {
-            usrname= results.rows.item(i).uname;
-            _email= results.rows.item(i).email;
-            _bankinfo = results.rows.item(i).bankinfo;
-          }
-           createSummary(usrname, _email, _bankinfo);
-       }, null);
+   $.ajax({
+   type: "GET",
+   url: "http://tandaklub.com/get/me?e="+usrEmail+"&p="+usrPass+"",
+   crossDomain: true,
+   cache: false,
+   dataType: 'json',
+   success: function(result){
+       if (result.st == 0) {
+         /*TODO:Currently only one error type, add more warnings when available*/
+         if(result.err[0] == "NotFound") {
+
+         }
+       }
+       else {
+          createSummary(result.item.name, result.item.email, result.item.lang)
+       }
+   }
    });
-function createSummary(_uname, _email, _bankinfo ) {
+
+
+
+function createSummary(_uname, _email, _lang ) {
   var tbhead= "<thead</thead><tbody>";
   var tbfoot ="</tbody>";
   var newRows="";
@@ -27,11 +36,11 @@ function createSummary(_uname, _email, _bankinfo ) {
   if(_email != null ){
     newRows+="<tr><th>Email:</th><td> "+_email+"</td>";
   }
-  if(_bankinfo != null ){
-    newRows+="<tr><th>Bank Info:</th><td> "+_bankinfo+"</td>";
+  if(_lang != null ){
+    newRows+="<tr><th>Language:</th><td> "+_lang+"</td>";
   }
-  $( "#settingsTable" ).empty( )
+  $( "#profileTable" ).empty( )
   var htmltable=tbhead+newRows+tbfoot;
-  $( "table#settingsTable" ).append( htmltable );
+  $( "table#profileTable" ).append( htmltable );
 }
  });
