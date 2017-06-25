@@ -4,8 +4,9 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Crea Tanda</title>
-  <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
-
+  <link rel="stylesheet" href="css/tandaklub.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
   <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
   <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
 
@@ -30,11 +31,19 @@
           display: none;
       }
   }
+  .headerboxed {
+    border: 1px solid rgb(135, 228, 231);
+    background-color: rgb(215, 250, 251);
+  }
+  .boxed {
+    border: 1px solid rgb(215, 250, 251);
+     background-color: rgb(237, 254, 255);
+  }
   </style>
 
 </head>
 <body>
-  <div data-role="page" id="MoneyPot">
+  <div data-role="page" id="MoneyPot" data-theme="a">
     <div data-role="header">
       <h1>TandaKlub</h1>
       <a href="#home-dialog" data-rel="dialog back" class="ui-btn-right" rel="external" data-role="button" data-icon="home" data-iconpos="notext"></a>
@@ -68,11 +77,8 @@
 
       <button id="mpnext" type="button" data-icon="arrow-r" data-iconpos="right" >Siguiente</button>
     </div>
-    <div data-role="footer" data-position="fixed" data-fullscreen="true">
-      <h2>&copy; TandaKlub Corp 2017</h2>
-    </div>
   </div>
-  <div data-role="page" id="payments">
+  <div data-role="page" id="payments" data-theme="a">
     <div data-role="header">
       <h1>Dita</h1>
       <a href="#home-dialog" data-rel="dialog back" class="ui-btn-right" rel="external" data-role="button" data-icon="home" data-iconpos="notext"></a>
@@ -109,11 +115,8 @@
       <div class="ui-field-contain ui-hidden-accessible"  id="div-payDatesMenu"></div>
       <button id="paymntnext"  data-icon="arrow-r" data-iconpos="right" >Siguiente</button><br/>
     </div>
-    <div data-role="footer" data-position="fixed" data-fullscreen="true">
-      <h2>&copy; TandaKlub Corp 2017</h2>
-    </div>
   </div>
-  <div data-role="page" id="friends">
+  <div data-role="page" id="friends" data-theme="a">
     <div data-role="header">
       <h1>TandaKlub</h1>
       <a href="#home-dialog" data-rel="dialog back" class="ui-btn-right" rel="external" data-role="button" data-icon="home" data-iconpos="notext"></a>
@@ -138,18 +141,14 @@
       <p>------------</p>
       <div id="TextBoxesGroup">
          <label for="email">Invita amigos por correo:</label>
-         <input type="text" name="textbox1" id="textbox1" value="">
       </div>
     <button id="newMail"  data-icon="plus" data-iconpos="notext" >Submit</button><br/>
     <button id="frndsnext"  data-icon="arrow-r" data-iconpos="right" >Siguiente</button><br/>
     </div>
-    <div data-role="footer" data-position="fixed" data-fullscreen="true">
-      <h2>&copy; TandaKlub Corp 2017</h2>
-    </div>
 </div>
-  <div data-role="page" id="finish">
+  <div data-role="page" id="finish" data-theme="a">
     <div data-role="header">
-      <h1>Dita</h1>
+      <h1>TandaKlub</h1>
       <a href="#home-dialog" data-rel="dialog back" class="ui-btn-right" rel="external" data-role="button" data-icon="home" data-iconpos="notext"></a>
       <div data-role="navbar">
         <ul>
@@ -172,6 +171,9 @@
          <h4>Amigos Invitados:</h4>
            <ul data-role="listview" data-inset="false" id=friendList></ul>
      </div>
+     <label for="comment">Textarea:</label>
+     <textarea cols="40" rows="8" name="comment" id="comment"  placeholder="Hola, Favor de unirte a mi tanda"></textarea>
+
       <div data-role="fieldcontain">
         <fieldset data-role="controlgroup">
           <legend>Acepta terminos y condiciones:</legend>
@@ -180,9 +182,6 @@
         </fieldset>
       </div>
       <input type="button" id="fnshcrt" value="Submit">
-    </div>
-    <div data-role="footer" data-position="fixed" data-fullscreen="true">
-      <h2>&copy; TandaKlub Corp 2017</h2>
     </div>
   </div>
   <div data-role="dialog" id="home-dialog">

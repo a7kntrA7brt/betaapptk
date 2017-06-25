@@ -1,5 +1,6 @@
 $(document).on("pageinit","#active",function() {
 $('#actwarningPlaceHolder').hide();
+//Appery("nav-panel").css("width","60px");
 });
 $(document).on("pageinit","#pending",function() {
 $('#penwarningPlaceHolder').hide();

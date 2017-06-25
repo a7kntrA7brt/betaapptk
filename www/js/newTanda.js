@@ -44,7 +44,7 @@ $(document).on("pageshow","#MoneyPot",function() {
       strdate = document.getElementById("date-input").value;
       nameTanda = document.getElementById("inputDitaName").value;
 
-      if (moneyPot % 100 == 0 && moneyPot != "" && moneyPot >= 500 && moneyPot <= 10000) {
+      if (moneyPot % 100 == 0 && moneyPot != "" && moneyPot >= 500 && moneyPot <= 50000) {
          mpin = true;
        }
       if (strdate != "" ) {
@@ -365,7 +365,7 @@ function clearPayments( ) {
   }
 }
 
-var counter = 2;
+var frndaddcnt = 1;
 var tkfrndcnt = 0;
 var mailcnt = 0;
 $(document).on("pageshow","#friends",function() {
@@ -407,53 +407,100 @@ $(document).on("pageshow","#friends",function() {
       } /*  success: function(result..*/
       });
 
-
+  var btn=[];
+  var mailfrndcnt = 0;
   $("#newMail").click(function() {
-    var newTextBoxDiv = $(document.createElement('div'))
-    .attr("id", 'TextBoxDiv' + counter);
 
-    newTextBoxDiv.after().html('<label>Invitar Amigo:</label>' +
-    '<input type="text" name="textbox'+counter+
-    '" id="textbox'+counter+'" data-clear-btn="true" value="" >');
+    /* Check if previous Input TextBox still exist
+     if True then check if if has data*/
+    var prevExist = false;
+    var prevEmpty = true;
+    var txttmp = document.getElementById('textbox'+(frndaddcnt-1)+'');
 
-    newTextBoxDiv.appendTo("#TextBoxesGroup");
-    $("#TextBoxDiv"+counter+" :text").textinput();
-    counter++;
+    if (txttmp != null) {
+       prevExist = true;
+       if(txttmp.value != "") {
+         prevEmpty = false;
+       }
+    }
+
+    if (prevExist == true && prevEmpty == false || prevExist == false) {
+       var newTextBoxDiv = $(document.createElement('div'))
+       .attr("id", 'TextBoxDiv' + frndaddcnt);
+       newTextBoxDiv.className="ui-field-contain";
+
+       newTextBoxDiv.after().html('<input type="text" name="textbox'+frndaddcnt+
+       '" id="textbox'+frndaddcnt+'" data-clear-btn="false" value="">' +
+       '<button id="txtbxdlt'+frndaddcnt+'" data-icon="delete" data-iconpos="notext" data-inline ="true">delete</button>');
+
+       newTextBoxDiv.appendTo("#TextBoxesGroup");
+       $( "#TextBoxesGroup" ).append( "<br>");
+      // $("#txtbxdlt"+frndaddcnt).button().button('refresh');
+       $("#TextBoxDiv"+frndaddcnt+" :text").textinput();
+       btn[frndaddcnt] = document.getElementById('txtbxdlt'+frndaddcnt+'');
+       btn[frndaddcnt].onclick = function( ) {
+          var txtinput = document.getElementById('TextBoxDiv'+btn.indexOf(this)+'');
+          txtinput.remove();
+          mailfrndcnt--;
+       }
+
+       if (frndaddcnt > 1)
+       {
+          /* Disable previous Input Text if available*/
+          if ( prevExist == true)
+          {
+             document.getElementById('textbox'+(frndaddcnt-1)+'').disabled = true;
+          }
+        }
+        frndaddcnt++;
+        mailfrndcnt++;
+     }
+     if (prevExist == true && prevEmpty == true ) {
+       $( "#frndwarningPlaceHolder" ).empty();
+       $( "#frndwarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>Campo vacio</a>" );
+       $('#frndwarningPlaceHolder').show();
+     }
   });
-
 
   $("#frndsnext").click(function() {
     var mincnt;
     var stat = true;
     var usrEmail = window.localStorage.getItem("usrEmail");
 
-    for (j=0; j < tkfrndcnt; j++) {
+      /* Getting friend list from TK */
+/*    for (j=0; j < tkfrndcnt; j++) {
       if (document.getElementById("textbox"+j+"").checked) {
          tkcontact[j]=document.getElementById("textbox"+j+"").value;
        }
-    }
-    if (counter < frdcnt ) {
+    }*/
+
+    if (mailfrndcnt < (frdcnt-1) ) {
       stat = false
     }
-    mailcontact[0] = usrEmail;
-    for(var k = 1; k < (counter) && stat == true ; k++) {
-      x=k;
-      mailcontact[k] = document.getElementById("textbox"+x+"").value;
-      if (mailcontact[k] == null) {
+  //  mailcontact[0] = usrEmail;
+    /* Get all Input Text elements, some may be deleted */
+    var y =0;
+    for(var k = 0; k < (frndaddcnt) && stat == true ; k++) {
+        x=k+1;
+        if (document.getElementById("textbox"+x+"") != null) {
+          mailcontact[y] = document.getElementById("textbox"+x+"").value;
+          y++;
+      }
+      if (mailcontact[y] == "") {
         stat=false;
       }
-      else {
-        /* Check that a user is not repeated*/
-        for(var j = 1; j < counter && stat == true ; j++) {
-          if (j != k){
-            tmpContact = mailcontact[j];
-            if (mailcontact[k] == tmpContact){
-              stat=false;
-            }
-          }
-        }/*for var j = 1 ...*/
-      }
     } /*for var k = 1 ...*/
+    /* Check that a user is not repeated*/
+    for(var j = 0; j < y && stat == true ; j++) {
+      tmpContact = mailcontact[j];
+       for (var k = 0; k < y && stat == true ; k++) {
+          if (j != k) {
+             if (mailcontact[k] == tmpContact){
+                stat=false;
+             }
+           }
+        }
+    }/*for var j = 1 ...*/
 
     if(stat == true) {
       var today = new Date();
@@ -471,11 +518,11 @@ $(document).on("pageshow","#friends",function() {
       if (  mailcontact.length > 0) {
           $.mobile.changePage( "#finish", { transition: "slideup", changeHash: false });
       }
-      }
-      else{
+    }
+    else {
         alert('Campo vacio o no se ha invitado a suficientes amigos')
-      }
-    });
+    }
+  });
 });
 
 $(document).on("pageshow","#finish",function() {
@@ -491,13 +538,18 @@ $( "#fnshcrt" ).click( function() {
  var usrEmail = window.localStorage.getItem("usrEmail");
  var usrPass = window.localStorage.getItem("usrPass");
  var propID;
+ var message = document.getElementById("comment").value;
+ if (message == null || message == "")
+ {
+   message ="Hola, Favor de unirte a mi tanda"
+ }
   if (document.getElementById("checkbox-agree").checked)
   {
 
      var dataString ="e="+usrEmail+"&p="+usrPass+"&idu="+userID+"&name="+
-     nameTanda+"&created="+guestcreationdate+"&message=hola&currency=mxn&pot="+
+     nameTanda+"&created="+guestcreationdate+"&message="+message+"&currency=mxn&pot="+
      moneyPot+"&charge="+paypprd+"&start="+strdate+
-     "&potfrequency="+1+"&authorpdate="+usrPayDate+"&mnum="+counter+"&mmin="+frdcnt+"";
+     "&potfrequency="+1+"&authorpdate="+usrPayDate+"&mnum="+frndaddcnt+"&mmin="+frdcnt+"";
 
     $.ajax({
      type: "POST",

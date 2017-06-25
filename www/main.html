@@ -26,10 +26,10 @@
 </head>
 <body>
 
-  <div data-role="page" class="jqm-demos ui-responsive-panel" id="active" data-theme="a">
+  <div data-role="page" class="pages jqm-demos ui-responsive-panel" id="active" data-theme="a">
      <div data-role="header" data-theme="a">
           <h1>TandaKlub</h1>
-          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <a href="#" class="showMenu" data-icon="bars" data-iconpos="notext">Menu</a>
           <div data-role="navbar">
             <ul>
               <li><a href="#" class="ui-btn-active ui-state-persist">ACTIVAS</a></li>
@@ -49,12 +49,9 @@
         </div>
         </div>
      </div>
-     <div data-role="footer" data-position="fixed" data-fullscreen="true">
-       <h2>&copy; TandaKlub Corp 2017</h2>
-     </div>
   </div>
 
-  <div data-role="page" class="jqm-demos ui-responsive-panel" id="pending">
+  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="pending">
      <div data-role="header">
           <h1>TandaKlub</h1>
           <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
@@ -79,12 +76,9 @@
         </div>
 
      </div>
-     <div data-role="footer" data-position="fixed" data-fullscreen="true">
-       <h2>&copy; TandaKlub Corp 2017</h2>
-     </div>
   </div>
 
-  <div data-role="page" class="jqm-demos ui-responsive-panel" id="closed">
+  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="closed">
      <div data-role="header">
           <h1>TandaKlub</h1>
           <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
@@ -104,13 +98,10 @@
         <div data-role="collapsible-set" id="closdTandas">
         </div>
      </div>
-     <div data-role="footer" data-position="fixed" data-fullscreen="true">
-       <h2>&copy; TandaKlub Corp 2017</h2>
-     </div>
   </div>
-
-  <div data-role="panel" data-display="reveal" id="nav-panel" data-position="right">
-      <ul data-role="listview">
+  <div id="menu" data-theme="a">
+      <h4>Menu</h4>
+      <ul data-role="listview" id="menu">
           <li data-icon="delete"><a href="#active" data-rel="close">Cerrar</a></li>
           <li><a href="userprofile.html" rel="external">Perfil</a></li>
           <li><a href="settings.html" rel="external">Configuraciones</a></li>
