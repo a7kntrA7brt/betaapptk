@@ -4,6 +4,7 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title>TandaInFo</title>
+       <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
    <link rel="stylesheet" href="css/tandaklub.min.css" />
    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
@@ -30,7 +31,21 @@
        }
    }
    .highlight td {
-    background: #A7F4E4;
+    background: rgb(215, 250, 251);
+    }
+    .boxed {
+      border: 1px solid rgb(215, 250, 251);
+       background-color: rgb(237, 254, 255);
+       width: 95%;
+       margin: 0 auto;
+       padding: 0px 0px 5px 10px;
+    }
+    .headerboxed {
+      border: 1px solid rgb(135, 228, 231);
+      background-color: rgb(215, 250, 251);
+      width: 95%;
+      margin: 0 auto;
+      padding: 0px 0px 0px 10px;
     }
    </style>
 
@@ -45,6 +60,8 @@
        <div data-role="fieldcontain" data-type="horizontal" id="warningPlaceHolder">
        </div>
        <h3>Informacion de Tanda:</h3>
+       <div class ="headerboxed" id =tandaInfoDiv></div>
+      <div class="boxed">
        <table data-role="table" id="infoTandaTable" data-mode="reflow" class="my-custom-breakpoint ">
          <thead></thead>
          <tbody></tbody>
@@ -54,7 +71,9 @@
          <thead></thead>
          <tbody></tbody>
        </table>
-        <a href="main.html" rel="external" data-role="button">Regresar</a>
+     </div>
+        <br>
+        <a href="main.html" class="ui-btn custom-btn" rel="external" data-role="button" >Regresar</a>
      </div>
   </div>
   <div data-role="panel" data-display="reveal" id="nav-panel">

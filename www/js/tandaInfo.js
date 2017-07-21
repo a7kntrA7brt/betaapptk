@@ -84,6 +84,7 @@ $(document).on("pageshow","#tandaInfo",function() {
                servcost = result.item.servicecost;
 
                if(moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
+                 $( "#tandaInfoDiv" ).append( "<h4>"+tname+"</h4>" )
                  pot_frequency = freq2string(pot_frequency);
                  createPoolTable(moneyPot, fstdate, pot_frequency,charge,poolmembersnum,tname,servcost);
                 }
@@ -154,6 +155,8 @@ else if (poolType == "p") {
                createdByMe = result.item.me;
 
                if(moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
+                 var statstring = propstat2string(poolstat);
+                 $( "#tandaInfoDiv" ).append( "<h4>"+tname+" ("+statstring+") </h4>" )
                  pot_frequency = freq2string(pot_frequency);
                  createProposalTable(moneyPot, fstdate, pot_frequency,charge,poolmembersnum,tname,servcost);
                 }
@@ -222,6 +225,7 @@ else if (poolType == "c"){
                createdByMe = result.item.me;
                servcost = result.item.servicecost;
                if(moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
+                 $( "#tandaInfoDiv" ).append( "<h4>"+tname+"</h4>" )
                  pot_frequency = freq2string(pot_frequency);
                  createPoolTable(moneyPot, fstdate, pot_frequency,charge,poolmembersnum,tname,servcost);
                 }
@@ -286,9 +290,7 @@ function createProposalTable(_mP, _date, _payFreq, _chrg, _frnds, _pname) {
   var tbhead= "<thead</thead><tbody>";
   var tbfoot ="</tbody>";
   var newRows;
-  if(_pname != null) {
-    newRows+="<tr><th>Nombre de Tanda:</th><td> "+_pname+"</td></tr>";
-  }
+
   if(_mP != null) {
     newRows+="<tr><th>Tanda:</th><td> "+_mP+" MXN</td></tr>";
   }

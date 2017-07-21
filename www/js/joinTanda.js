@@ -85,6 +85,7 @@ $(document).on("pageshow","#proposalInfo",function() {
                createdByMe = result.item.me;
 
                if(moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
+                 $( "#tandaInfoDiv" ).append( "<h4>"+tname+"</h4>" )
                  pot_frequency = freq2string(pot_frequency);
                  createProposalTable(moneyPot, fstdate, pot_frequency,charge,poolmembersnum,tname,servcost);
                 }
@@ -201,9 +202,7 @@ function createProposalTable(_mP, _date, _payFreq, _chrg, _frnds, _pname) {
   var tbhead= "<thead</thead><tbody>";
   var tbfoot ="</tbody><br>";
   var newRows;
-  if(_pname != null) {
-    newRows+="<tr><th>Nombre de Tanda:</th><td> "+_pname+"</td></tr>";
-  }
+
   if(_mP != null) {
     newRows+="<tr><th>Tanda:</th><td> "+_mP+" MXN</td></tr>";
   }
@@ -248,11 +247,11 @@ function createProposalMembersStat( _iduser, _mpaydates, _gpaydates, _mmin, _mnu
  function createPropsalMemRow(_iduser, _cnt, _paydates, newRows) {
    if (_iduser != null)
    {
-       newRows+="<tr><td> "+_paydates+"</td><td>Tomado</td></tr>";
+       newRows+="<tr><td><input type='radio' disabled='true' name='paydatechoice' id='choice-"+_cnt+"' value='"+_paydates+"'><label for='choice-"+_cnt+"'>"+_paydates+"</label></td><td>Tomado</td><td></td></tr>";
    }
    else {
      newRows+="<tr><td><input type='radio' name='paydatechoice' id='choice-"+_cnt+"' value='"+_paydates+"'><label for='choice-"+_cnt+"'>"+_paydates+"</label></td><td>Disponible</td><td></td></tr>";
-     radiOptCnt++;
    }
+    radiOptCnt++;
    return newRows;
   }

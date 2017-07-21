@@ -4,6 +4,7 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <title> Home Page </title>
+   <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
    <link rel="stylesheet" href="css/tandaklub.min.css" />
    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
@@ -15,94 +16,135 @@
    .headerboxed {
      border: 1px solid rgb(135, 228, 231);
      background-color: rgb(215, 250, 251);
+     width: 75%;
+     margin: 0 auto;
+     padding: 10px 0px 5px 10px;
    }
    .boxed {
      border: 1px solid rgb(215, 250, 251);
       background-color: rgb(237, 254, 255);
+      width: 75%;
+      margin: 0 auto;
+      padding: 0px 0px 5px 10px;
+   }
+   .singleboxed {
+     border: 1px solid rgb(215, 250, 251);
+      background-color: rgb(237, 254, 255);
+      width: 75%;
+      margin: 0 auto;
+      padding: 20px 0px 20px 20px;
+   }
+   .ui-icon-moneybag:after {
+    background-image: url("css/images/custom-icons-png/moneybag.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+   }
+   .ui-icon-friends:after {
+    background-image: url("css/images/custom-icons-png/icon-groups-friends.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
+    }
+   .ui-icon-news:after {
+    background-image: url("css/images/custom-icons-png/icon-news.png");
+    /* Make your icon fit */
+    background-size: 18px 18px;
    }
    </style>
 
-
 </head>
 <body>
-
-  <div data-role="page" class="pages jqm-demos ui-responsive-panel" id="active" data-theme="a">
-     <div data-role="header" data-theme="a">
+  <div data-role="page" class="pages jqm-demos ui-responsive-panel" id="newsfeedpage" data-theme="a">
+     <div data-role="header">
           <h1>TandaKlub</h1>
           <a href="#" class="showMenu" data-icon="bars" data-iconpos="notext">Menu</a>
           <div data-role="navbar">
             <ul>
-              <li><a href="#" class="ui-btn-active ui-state-persist">ACTIVAS</a></li>
-              <li><a href="#pending">PENDIENTES</a></li>
-              <li><a href="#closed">CERRADAS</a></li>
+              <li><a href="#" data-icon="news" data-iconpos="notext" class="ui-btn-active ui-state-persist"></a></li>
+              <li><a href="#tandaspage" data-icon="moneybag" data-iconpos="notext"></a></li>
+              <li><a href="#invitationspage" data-icon="mail"  data-iconpos="notext"></a></li>
+              <li><a href="#friendspage"  data-icon="friends" data-iconpos="notext"></a></li>
             </ul>
           </div>
           <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-position="right"></a>
      </div>
-
-     <div data-role="main"class="ui-content jqm-content jqm-fullwidth">
-       <div data-role="fieldcontain" data-type="horizontal" id="actwarningPlaceHolder">
-       </div>
-        <h3>Tandas en las que participo:</h3>
-        <div class="headerboxed">
-        <div data-role="collapsible-set" id="activeTandas">
-        </div>
-        </div>
+     <div data-role="main" class="ui-content jqm-content jqm-fullwidth">
+       <div data-role="fieldcontain" data-type="horizontal" id="newswarningPlaceHolder"></div>
+        <h4>Noticias:</h4>
+        <div id="newsfeedinfo"></div>
      </div>
   </div>
 
-  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="pending">
+  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="tandaspage">
      <div data-role="header">
           <h1>TandaKlub</h1>
-          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <a href="#" class="showMenu" data-icon="bars" data-iconpos="notext">Menu</a>
           <div data-role="navbar">
             <ul>
-              <li><a href="#active">ACTIVAS</a></li>
-              <li><a href="#" class="ui-btn-active ui-state-persist">PENDIENTES</a></li>
-              <li><a href="#closed">CERRADAS</a></li>
+              <li><a href="#newsfeedpage"  data-icon="news"  data-iconpos="notext"></a></li>
+              <li><a href="#"  data-icon="moneybag" data-iconpos="notext" class="ui-btn-active ui-state-persist"></a></li>
+              <li><a href="#invitationspage"  data-icon="mail"  data-iconpos="notext"></a></li>
+              <li><a href="#friendspage"  data-icon="friends" data-iconpos="notext"></a></li>
             </ul>
           </div>
           <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-positon ="right"></a>
      </div>
 
      <div data-role="main"class="ui-content">
-       <div data-role="fieldcontain" data-type="horizontal" id="penwarningPlaceHolder">
-       </div>
-        <h3>Tandas que he creado:</h3>
-          <div data-role="collapsible-set"id="penCrtedTandas">
-          </div>
-        <h3>Tandas en las que he sido invitado</h3>
-        <div data-role="collapsible-set" id="penInvtedTandas">
-        </div>
-
+       <div data-role="fieldcontain" data-type="horizontal" id="tandaswarningPlaceHolder"></div>
+       <h4>Tandas:</h4>
+       <div id="activeTandas"></div>
+       <h4>Propuesta de Tanda:</h4>
+       <div id="penCrtedTandas"></div>
+       <h4>Tandas que ya terminaron:</h4>
+       <div id="closdTandas"></div>
      </div>
   </div>
 
-  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="closed">
+  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="invitationspage">
      <div data-role="header">
           <h1>TandaKlub</h1>
-          <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+          <a href="#" class="showMenu" data-icon="bars" data-iconpos="notext">Menu</a>
           <div data-role="navbar">
             <ul>
-              <li><a href="#active">ACTIVAS</a></li>
-              <li><a href="#pending">PENDIENTES</a></li>
-              <li><a href="#" class="ui-btn-active ui-state-persist">CERRADAS</a></li>
+              <li><a href="#newsfeedpage"  data-icon="news"  data-iconpos="notext"></a></li>
+              <li><a href="#tandaspage" data-icon="moneybag" data-iconpos="notext"></a></li>
+              <li><a href="#" data-icon="mail"  data-iconpos="notext" class="ui-btn-active ui-state-persist"></a></li>
+                <li><a href="#friendspage"  data-icon="friends" data-iconpos="notext"></a></li>
             </ul>
           </div>
           <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-position = "right"></a>
      </div>
      <div data-role="main"class="ui-content">
-       <div data-role="fieldcontain" data-type="horizontal" id="closdwarningPlaceHolder">
-       </div>
-        <h3>Tandas que ya terminaron:</h3>
-        <div data-role="collapsible-set" id="closdTandas">
-        </div>
+       <div data-role="fieldcontain" data-type="horizontal" id="invitewarningPlaceHolder"></div>
+       <h4>Tandas en las que he sido invitado:</h4>
+       <div id="penInvtedTandas"></div>
+     </div>
+  </div>
+
+  <div data-role="page" class=" pages jqm-demos ui-responsive-panel" id="friendspage">
+     <div data-role="header">
+          <h1>TandaKlub</h1>
+          <a href="#" class="showMenu" data-icon="bars" data-iconpos="notext">Menu</a>
+          <div data-role="navbar">
+            <ul>
+              <li><a href="#newsfeedpage"  data-icon="news"  data-iconpos="notext"></a></li>
+              <li><a href="#tandaspage" data-icon="moneybag" data-iconpos="notext"></a></li>
+              <li><a href="#invitationspage" data-icon="mail"  data-iconpos="notext" ></a></li>
+              <li><a href="#" data-icon="friends" data-iconpos="notext" class="ui-btn-active ui-state-persist"></a></li>
+            </ul>
+          </div>
+          <a href="newTanda.html" rel="external" data-role="button" data-icon="plus" data-iconpos="notext" data-position = "right"></a>
+     </div>
+     <div data-role="main"class="ui-content">
+       <div data-role="fieldcontain" data-type="horizontal" id="frndsdwarningPlaceHolder"></div>
+       <h4>Amigos:</h4>
+       <div id="frndList"></div>
      </div>
   </div>
   <div id="menu" data-theme="a">
       <h4>Menu</h4>
       <ul data-role="listview" id="menu">
-          <li data-icon="delete"><a href="#active" data-rel="close">Cerrar</a></li>
+          <li data-icon="delete"><a href="#newsfeedpage" data-rel="close">Cerrar</a></li>
           <li><a href="userprofile.html" rel="external">Perfil</a></li>
           <li><a href="settings.html" rel="external">Configuraciones</a></li>
           <li><a href="javascript:logOut();" rel="external">Log Out</a></li>

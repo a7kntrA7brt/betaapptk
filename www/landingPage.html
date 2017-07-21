@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bienvenido a TandaKlub</title>
     <link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" href="css/tandaklub.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+    <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script type="text/javascript" src="js/landingpage.js"></script>
@@ -24,21 +26,18 @@
         <label for="text-basic">Password:</label>
         <input type="text" name="Password" placeholder="Password" id="loginPasswrd" >
 
-        <button type="button" data-mini="false" data-inline="false" id="submitlogin">LOGIN</button>
+        <button type="button" class="custom-btn ui-mini ui-shadow ui-btn-corner-all" data-mini="true" data-inline="false" id="submitlogin">LOGIN</button>
         <a href="#passpop" data-rel="popup" data-transition="pop">Olvidaste tu password?</a>
         <div data-role="popup" id="passpop">
           <p>Que pena me da tu caso: TBD Implementation</p>
         </div>
 
         <p>Login con:</p>
-          <a href="#" class="ui-btn ui-shadow">Facebook</a>
+          <a href="#" class="custom-btn ui-btn ui-mini ui-shadow">Facebook</a>
           <div data-role="fieldcontain" data-type="horizontal" data-inline="true" display="inline-block">
              <p data-inline="true">Eres nuevo a TandaKlub?</p>
              <a href="registerUser.html" rel="external" data-position="right">Registrate aqui</a>
           </div>
-      </div>
-      <div data-role="footer" data-position="fixed" data-fullscreen="true">
-        <h2>&copy; TandaKlub Corp 2017</h2>
       </div>
     </div>
   </body>

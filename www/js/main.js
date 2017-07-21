@@ -1,35 +1,51 @@
-$(document).on("pageinit","#active",function() {
-$('#actwarningPlaceHolder').hide();
-//Appery("nav-panel").css("width","60px");
+$(document).on("pageinit","#newsfeedpage",function() {
+$('#newswarningPlaceHolder').hide();
 });
-$(document).on("pageinit","#pending",function() {
-$('#penwarningPlaceHolder').hide();
+$(document).on("pageinit","#tandaspage",function() {
+$('#tandaswarningPlaceHolder').hide();
 });
-$(document).on("pageinit","#closed",function() {
-$('#closdwarningPlaceHolder').hide();
+$(document).on("pageinit","#invitationspage",function() {
+$('#invitewarningPlaceHolder').hide();
+});
+$(document).on("pageinit","#friendspage",function() {
+$('#frndsdwarningPlaceHolder').hide();
 });
 
+
+
+$(document).on("pageshow","#newsfeedpage",function() {
+
+  var usrEmail = window.localStorage.getItem("usrEmail");
+  var usrPass = window.localStorage.getItem("usrPass");
+
+  });
 
 /*Get all Tandas that are Active
-that User has created or is invited to
-participate - Not is in progress*/
-$(document).on("pageshow","#active",function() {
+that User participates in */
+/*Get all Tandas that are Proposals
+that User - Not yet ActivePools */
+
+$(document).on("pageshow","#tandaspage",function() {
   var moneyPot= null;
   var fstdate= null;
   var tname= null;
   var pot_frequency= null;
   var charge= null;
-  var frequency= null;
   var poolId= null;
   var stat = true;
+  var type =null;
+  var status=null;
 
   /* Refrehing each time we are Loading the page*/
+  $( "#penCrtedTandas" ).empty( );
   $( "#activeTandas" ).empty( );
+  $( "#closdTandas" ).empty( );
 
   var usrEmail = window.localStorage.getItem("usrEmail");
   var usrPass = window.localStorage.getItem("usrPass");
 
   if ((usrEmail != null && usrPass != null) && (usrEmail != "" && usrPass != "" )) {
+
     $.ajax({
       type: "GET",
       url: "http://tandaklub.com/get/mypools?e="+usrEmail+"&p="+usrPass+"",
@@ -40,9 +56,9 @@ $(document).on("pageshow","#active",function() {
         if (result.st == 0) {
           /*TODO:Currently only one error type, add more warnings when available*/
           if(result.err[0] == "NotFound") {
-            $( "#actwarningPlaceHolder" ).empty();
-            $( "#actwarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
-            $('#actwarningPlaceHolder').show();
+            $( "#tandaswarningPlaceHolder" ).empty();
+            $( "#tandaswarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+            $('#tandaswarningPlaceHolder').show();
           }
         }
         else {
@@ -58,20 +74,112 @@ $(document).on("pageshow","#active",function() {
               poolId = result.list[i].id;
               if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null && frequency != null && tname != null){
                 pot_frequency = freq2string(pot_frequency);
-                var newRows="<p>Tanda:       "+moneyPot+"MXN</p><p>Frequencia:    "+pot_frequency+"</p><p>Comienza:     "+fstdate+"</p><p>Cobro:      "+charge+"</p>";
+                var headstring="<h4 class='headerboxed'>"+tname+"</h4>";
+                var infostring="<p>Tanda: "+moneyPot+"MXN</p><p>Frequencia:"+pot_frequency+"</p><p>Comienza: "+fstdate+"</p><p>Cobro: "+charge+"</p>"
                 var link =  "<a href='tandaInfo.html?poolId="+poolId+"&type=a' rel='external'>Mayor Informacion</a>"
-                content+= "<div data-role='collapsible' data-collapsed='true'><h4>"+tname +"</h4>"+newRows+link+"</div>";
+                content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
               }
             }/*for(var i = 0...*/
 
-              $( "#activeTandas" ).append( content ).collapsibleset( "refresh" );
+              $( "#activeTandashead" ).append( content );
             }/* if (result.list.length != 0)*/
             else {
-              $( "#activeTandas" ).append( "<p>No hay Tandas</p>" ).collapsibleset( "refresh" );
+              $( "#activeTandas" ).append("<p class='singleboxed'>No hay Tandas</p>");
             }
           }
         } /*  success: function(result..*/
         });
+        $.ajax({
+          type: "GET",
+          url: "http://tandaklub.com/get/myproposals?e="+usrEmail+"&p="+usrPass+"",
+          crossDomain: true,
+          cache: false,
+          dataType: 'json',
+          success: function(result) {
+            if (result.st == 0) {
+              /*TODO:Currently only one error type, add more warnings when available*/
+              if(result.err[0] == "NotFound") {
+                $( "#tandaswarningPlaceHolder" ).empty();
+                $( "#tandaswarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+                $('#tandaswarningPlaceHolder').show();
+              }
+            }
+            else {
+              if (result.list.length != 0) {
+                var content ="";
+                for(var i = 0; i < result.list.length; i++) {
+                  moneyPot = result.list[i].pot;
+                  fstdate = result.list[i].start;
+                  pot_frequency = result.list[i].pot_frequency;
+                  charge = result.list[i].charge;
+                  tname = result.list[i].name;
+                  poolId = result.list[i].id;
+                  type = result.list[i].mtype;
+                  status = result.list[i].status;
+                  if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null && status != null){
+                      var statstring = propstat2string(status);
+                      pot_frequency = freq2string(pot_frequency);
+                      var headstring="<h4 class='headerboxed'>"+tname+"  ("+statstring+")</h4>";
+                      var infostring="<p>Tanda: "+moneyPot+"MXN</p><p>Frequencia:"+pot_frequency+"</p><p>Comienza: "+fstdate+"</p><p>Cobro: "+charge+"</p>"
+                      var link =  "<a href='tandaInfo.html?poolId="+poolId+"&type=p' rel='external'>Mayor Informacion</a>"
+                      content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                  }
+                }/*for(var i = 0...*/
+                //  $( "#penCrtedTandas" ).append( content ).collapsibleset( "refresh" );
+                    if(content == "") {
+                      content="<p class='singleboxed'>No tienes nuevas Tandas</p>";
+                    }
+                    $( "#penCrtedTandas" ).append( content );
+                }/* if (result.list.length != 0)*/
+                else {
+                  $( "#penCrtedTandas" ).append( "<p class='singleboxed'>No tienes nuevas Tandas</p>" );
+                }
+              }
+            } /*  success: function(result..*/
+            });
+            $.ajax({
+              type: "GET",
+              url: "http://tandaklub.com/get/myclosed?e="+usrEmail+"&p="+usrPass+"",
+              crossDomain: true,
+              cache: false,
+              dataType: 'json',
+              success: function(result) {
+                if (result.st == 0) {
+                  /*TODO:Currently only one error type, add more warnings when available*/
+                  if(result.err[0] == "NotFound") {
+                    $( "#tandaswarningPlaceHolder" ).empty();
+                    $( "#tandaswarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+                    $('#tandaswarningPlaceHolder').show();
+                  }
+                }
+                else {
+                  if (result.list.length != 0) {
+                    var content ="";
+                    for(var i = 0; i < result.list.length; i++) {
+                      moneyPot = result.list[i].pot;
+                      fstdate = result.list[i].start;
+                      pot_frequency = result.list[i].pot_frequency;
+                      charge = result.list[i].charge;
+                      frequency = result.list[i].frequency;
+                      tname = result.list[i].name;
+                      poolId = result.list[i].id;
+                      if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null && frequency != null && tname != null){
+                        pot_frequency = freq2string(pot_frequency);
+                        var headstring="<h4 class='headerboxed'>"+tname+"</h4>";
+                        var infostring="<p>Tanda: "+moneyPot+"MXN</p><p>Frequencia:"+pot_frequency+"</p><p>Comienza: "+fstdate+"</p><p>Cobro: "+charge+"</p>"
+                        var link =  "<a href='tandaInfo.html?poolId="+poolId+"&type=c' rel='external'>Mayor Informacion</a>"
+                        content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                      }
+                    }/*for(var i = 0...*/
+                      $( "#closdTandas" ).append( content );
+                    }/* if (result.list.length != 0)*/
+                    else {
+                      $( "#closdTandas" ).append( "<p class ='singleboxed'>No hay Tandas</p>" );
+                    }
+                  }
+                } /*  success: function(result..*/
+                });
+
       }/*if (usrEmail != null && us...)*/
       else {
         /*Should not fall in this else*/
@@ -80,72 +188,25 @@ $(document).on("pageshow","#active",function() {
       }
     });
 
-/*Get all Tandas that are Proposals
-that User has created or is invited to
-participate - Not yet ActivePools */
-/* Cosider - Have I accepted the invitation.
-             Is it a new invitation*/
+    /*Get all Tandas that are invitationspage
+    that User has created or is invited to
+    participate - Tanda Finished */
+    $(document).on("pageshow","#invitationspage",function() {
+      var moneyPot= null;
+      var fstdate= null;
+      var tname= null;
+      var pot_frequency= null;
+      var charge= null;
+      var frequency= null;
+      var poolId= null;
+      var stat = true;
 
-$(document).on("pageshow","#pending",function() {
-  var moneyPot= null;
-  var fstdate= null;
-  var tname= null;
-  var pot_frequency= null;
-  var charge= null;
-  var poolId= null;
-  var stat = true;
+      $( "#penInvtedTandas" ).empty( );
 
-  $( "#penCrtedTandas" ).empty( );
-  $( "#penInvtedTandas" ).empty( );
+      var usrEmail = window.localStorage.getItem("usrEmail");
+      var usrPass = window.localStorage.getItem("usrPass");
 
-  var usrEmail = window.localStorage.getItem("usrEmail");
-  var usrPass = window.localStorage.getItem("usrPass");
-
-  if ((usrEmail != null && usrPass != null) && (usrEmail != "" && usrPass != "" )) {
-    $.ajax({
-      type: "GET",
-      url: "http://tandaklub.com/get/myproposals?e="+usrEmail+"&p="+usrPass+"",
-      crossDomain: true,
-      cache: false,
-      dataType: 'json',
-      success: function(result) {
-        if (result.st == 0) {
-          /*TODO:Currently only one error type, add more warnings when available*/
-          if(result.err[0] == "NotFound") {
-            $( "#penwarningPlaceHolder" ).empty();
-            $( "#penwarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
-            $('#penwarningPlaceHolder').show();
-          }
-        }
-        else {
-          if (result.list.length != 0) {
-            var content ="";
-            for(var i = 0; i < result.list.length; i++) {
-              moneyPot = result.list[i].pot;
-              fstdate = result.list[i].start;
-              pot_frequency = result.list[i].pot_frequency;
-              charge = result.list[i].charge;
-              tname = result.list[i].name;
-              poolId = result.list[i].id;
-              status = result.list[i].status;
-              if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null && status != null){
-                if(status == "2") {
-                  pot_frequency = freq2string(pot_frequency);
-                  var newRows="<p>Tanda: "+"  "+moneyPot+" MXN</p><p>Frequencia:    "+pot_frequency+"</p><p>Comienza:     "+fstdate+"</p><p>Cobro:      "+charge+"</p>";
-                  var link =  "<a href='tandaInfo.html?poolId="+poolId+"&type=p' rel='external'>Mayor Informacion</a>"
-                  content+= "<div data-role='collapsible' data-collapsed='true'><h4>"+tname +"</h4>"+newRows+link+"</div>";
-                }
-              }
-            }/*for(var i = 0...*/
-              $( "#penCrtedTandas" ).append( content ).collapsibleset( "refresh" );
-            }/* if (result.list.length != 0)*/
-            else {
-              $( "#penCrtedTandas" ).append( "<p>No hay Tandas</p>" ).collapsibleset( "refresh" );
-            }
-          }
-        } /*  success: function(result..*/
-        });
-
+      if ((usrEmail != null && usrPass != null) && (usrEmail != "" && usrPass != "" )) {
         $.ajax({
           type: "GET",
           url: "http://tandaklub.com/get/invitations?e="+usrEmail+"&p="+usrPass+"",
@@ -156,9 +217,9 @@ $(document).on("pageshow","#pending",function() {
             if (result.st == 0) {
               /*TODO:Currently only one error type, add more warnings when available*/
               if(result.err[0] == "NotFound") {
-                $( "#penwarningPlaceHolder" ).empty();
-                $( "#penwarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
-                $('#penwarningPlaceHolder').show();
+                $( "#invitewarningPlaceHolder" ).empty();
+                $( "#invitewarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+                $('#invitewarningPlaceHolder').show();
               }
             }
             else {
@@ -173,89 +234,16 @@ $(document).on("pageshow","#pending",function() {
                   poolId = result.list[i].id;
                   if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
                     pot_frequency = freq2string(pot_frequency);
-                    var newRows="<p>Tanda: "+"  "+moneyPot+" MXN</p><p>Frequencia:    "+pot_frequency+"</p><p>Comienza:     "+fstdate+"</p><p>Cobro:      "+charge+"</p>";
+                    var headstring="<h4 class='headerboxed'>"+tname+"</h4>";
+                    var infostring="<p>Tanda: "+moneyPot+"MXN</p><p>Frequencia:"+pot_frequency+"</p><p>Comienza: "+fstdate+"</p><p>Cobro: "+charge+"</p>"
                     var link =  "<a href='joinTanda.html?poolId="+poolId+"' rel='external'>Mayor Informacion</a>"
-                    content+= "<div data-role='collapsible' data-collapsed='true'><h4>"+tname +"</h4>"+newRows+link+"</div>";
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
                   }
                 }/*for(var i = 0...*/
-                  $( "#penInvtedTandas" ).append( content ).collapsibleset( "refresh" );
+                  $( "#penInvtedTandas" ).append( content );
                 }/* if (result.list.length != 0)*/
                 else {
-                  $( "#penInvtedTandas" ).append( "<p>No hay nuevas Invitaciones</p>" ).collapsibleset( "refresh" );
-                }
-              }
-            } /*  success: function(result..*/
-            });
-
-
-
-
-
-
-      }/*if (usrEmail != null && us...)*/
-      else {
-        /*Should not fall in this else*/
-        alert("Error. Cerrando applicacion ");
-        logOut();
-      }
-    });
-
-    /*Get all Tandas that are Closed
-    that User has created or is invited to
-    participate - Tanda Finished */
-    $(document).on("pageshow","#closed",function() {
-      var moneyPot= null;
-      var fstdate= null;
-      var tname= null;
-      var pot_frequency= null;
-      var charge= null;
-      var frequency= null;
-      var poolId= null;
-      var stat = true;
-
-      $( "#closdTandas" ).empty( );
-
-      var usrEmail = window.localStorage.getItem("usrEmail");
-      var usrPass = window.localStorage.getItem("usrPass");
-
-      if ((usrEmail != null && usrPass != null) && (usrEmail != "" && usrPass != "" )) {
-        $.ajax({
-          type: "GET",
-          url: "http://tandaklub.com/get/myclosed?e="+usrEmail+"&p="+usrPass+"",
-          crossDomain: true,
-          cache: false,
-          dataType: 'json',
-          success: function(result) {
-            if (result.st == 0) {
-              /*TODO:Currently only one error type, add more warnings when available*/
-              if(result.err[0] == "NotFound") {
-                $( "#closdwarningPlaceHolder" ).empty();
-                $( "#closdwarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
-                $('#closdwarningPlaceHolder').show();
-              }
-            }
-            else {
-              if (result.list.length != 0) {
-                var content ="";
-                for(var i = 0; i < result.list.length; i++) {
-                  moneyPot = result.list[i].pot;
-                  fstdate = result.list[i].start;
-                  pot_frequency = result.list[i].pot_frequency;
-                  charge = result.list[i].charge;
-                  frequency = result.list[i].frequency;
-                  tname = result.list[i].name;
-                  poolId = result.list[i].id;
-                  if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null && frequency != null && tname != null){
-                    pot_frequency = freq2string(pot_frequency);
-                    var newRows="<p>Tanda:       "+moneyPot+"MXN</p><p>Frequencia:    "+pot_frequency+"</p><p>Comienza:     "+fstdate+"</p><p>Cobro:      "+charge+"</p>";
-                    var link =  "<a href='tandaInfo.html?poolId="+poolId+"&type=c' rel='external'>Mayor Informacion</a>"
-                    content+= "<div data-role='collapsible' data-collapsed='true'><h4>"+tname +"</h4>"+newRows+link+"</div>";
-                  }
-                }/*for(var i = 0...*/
-                  $( "#closdTandas" ).append( content ).collapsibleset( "refresh" );
-                }/* if (result.list.length != 0)*/
-                else {
-                  $( "#closdTandas" ).append( "<p>No hay Tandas</p>" ).collapsibleset( "refresh" );
+                  $( "#penInvtedTandas" ).append( "<p class='singleboxed'>No hay nuevas Invitaciones</p>" );
                 }
               }
             } /*  success: function(result..*/
@@ -267,3 +255,45 @@ $(document).on("pageshow","#pending",function() {
             logOut();
           }
         });
+
+
+        $(document).on("pageshow","#friendspage",function() {
+
+          var usrPass = window.localStorage.getItem("usrPass");
+          var usrEmail = window.localStorage.getItem("usrEmail");
+
+        $( "#frndList" ).empty( );
+        
+        $.ajax({
+          type: "GET",
+          url: "http://tandaklub.com/get/friends?e="+usrEmail+"&p="+usrPass+"",
+          crossDomain: true,
+          cache: false,
+          dataType: 'json',
+          success: function(result) {
+            if (result.st == 0) {
+              /*TODO:Currently only one error type, add more warnings when available*/
+              if(result.err[0] == "NotFound") {
+               /*TODO: Determine proper action*/
+              }
+            }
+            else {
+              tkfrndcnt = result.list.length;
+              if (result.list.length != 0) {
+                var content ="";
+                for(var i = 0; i < result.list.length; i++) {
+                  tname = result.list[i].name;
+                  tmail = result.list[i].email;
+                    var newRows= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
+                    "<label for='checkbox"+i+"' style='display:inline'>"+tname+"</label>";
+                }/*for(var i = 0...*/
+                  content+= "<h4>Amigos de TandaKlub</h4>"+newRows;
+                  $( "#frndList" ).append( content );
+                }/* if (result.list.length != 0)*/
+                else {
+                  $( "#frndList" ).append( "<p>No se encontraron amigos</p>" );
+                }
+              }
+            } /*  success: function(result..*/
+            });
+   });

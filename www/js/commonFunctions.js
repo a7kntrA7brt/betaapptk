@@ -12,6 +12,34 @@ function freq2string(pot_frequency)
   return pot_frequency;
 }
 
+function freq2int(pot_frequency)
+{
+  if(pot_frequency == "Mensual") {
+    pot_frequency =1
+  }
+  else if (pot_frequency == "Quincenal") {
+    pot_frequency =2
+  }
+  else {
+    pot_frequency =4
+  }
+  return pot_frequency;
+}
+
+function propstat2string(stat)
+{
+  if(stat== 1) {
+    status ="Creado"
+  }
+  else if (stat == 2) {
+    status ="Esperando usuarios"
+  }
+  else {
+    status ="Cancelado"
+  }
+  return status;
+}
+
 function propMemStat2String(status)
 {
   if(status == 0) {

@@ -368,6 +368,7 @@ function clearPayments( ) {
 var frndaddcnt = 1;
 var tkfrndcnt = 0;
 var mailcnt = 0;
+var tkfrndlist =[];
 $(document).on("pageshow","#friends",function() {
 
   var usrPass = window.localStorage.getItem("usrPass");
@@ -394,10 +395,13 @@ $(document).on("pageshow","#friends",function() {
           var content ="";
           for(var i = 0; i < result.list.length; i++) {
             tname = result.list[i].name;
-              var newRows= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"' class='custom'>"+
-              "<label for='checkbox"+i+"'>"+tname+"</label>";
+            tmail = result.list[i].email;
+              var newRows= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
+              "<label for='checkbox"+i+"' style='display:inline'>"+tname+"</label>";
+              tkfrndlist[i]=tmail;
           }/*for(var i = 0...*/
             content+= "<div data-role='collapsible' data-collapsed='true'><h4>Amigos de TandaKlub</h4>"+newRows+"</div>";
+            $("input[type='checkbox']").checkboxradio().checkboxradio("refresh");
             $( "#TKFriendList" ).append( content ).collapsibleset( "refresh" );
           }/* if (result.list.length != 0)*/
           else {
@@ -465,21 +469,23 @@ $(document).on("pageshow","#friends",function() {
   $("#frndsnext").click(function() {
     var mincnt;
     var stat = true;
+    var y =0;
     var usrEmail = window.localStorage.getItem("usrEmail");
 
       /* Getting friend list from TK */
-/*    for (j=0; j < tkfrndcnt; j++) {
-      if (document.getElementById("textbox"+j+"").checked) {
-         tkcontact[j]=document.getElementById("textbox"+j+"").value;
+    for (j=0; j < tkfrndcnt; j++) {
+      if (document.getElementById("checkbox"+j+"").checked) {
+         mailcontact[y]=tkfrndlist[j];
+         y++;
        }
-    }*/
+    }
 
-    if (mailfrndcnt < (frdcnt-1) ) {
+    if (mailfrndcnt + y < (frdcnt-1) ) {
       stat = false
     }
   //  mailcontact[0] = usrEmail;
     /* Get all Input Text elements, some may be deleted */
-    var y =0;
+
     for(var k = 0; k < (frndaddcnt) && stat == true ; k++) {
         x=k+1;
         if (document.getElementById("textbox"+x+"") != null) {
@@ -538,6 +544,7 @@ $( "#fnshcrt" ).click( function() {
  var usrEmail = window.localStorage.getItem("usrEmail");
  var usrPass = window.localStorage.getItem("usrPass");
  var propID;
+ var payFreqint;
  var message = document.getElementById("comment").value;
  if (message == null || message == "")
  {
@@ -545,11 +552,11 @@ $( "#fnshcrt" ).click( function() {
  }
   if (document.getElementById("checkbox-agree").checked)
   {
-
+     payFreqint = freq2int(payFreq);
      var dataString ="e="+usrEmail+"&p="+usrPass+"&idu="+userID+"&name="+
      nameTanda+"&created="+guestcreationdate+"&message="+message+"&currency=mxn&pot="+
      moneyPot+"&charge="+paypprd+"&start="+strdate+
-     "&potfrequency="+1+"&authorpdate="+usrPayDate+"&mnum="+frndaddcnt+"&mmin="+frdcnt+"";
+     "&potfrequency="+payFreqint+"&authorpdate="+usrPayDate+"&mnum="+frndaddcnt+"&mmin="+frdcnt+"";
 
     $.ajax({
      type: "POST",
@@ -568,12 +575,11 @@ $( "#fnshcrt" ).click( function() {
             type: "POST",
             url:"http://tandaklub.com/set/addguest?"+dataString2+"",
             data: dataString,
-            crossDomain: true,
             cache: false,
             success: function(data) {
               guestAddedDB++;
               if (guestAddedDB ==  mailcontact.length) {
-                var dataString3 ="e="+usrEmail+"&p="+usrPass+"&id="+propID+"";
+                var dataString3 ="e="+usrEmail+"&p="+usrPass+"&id="+propID;
                 $.ajax({
                  type: "POST",
                  url:"http://tandaklub.com/set/confirm?"+dataString3+"",
@@ -618,9 +624,10 @@ function createSummary(_mP, _date, _payFreq, _chrg, _frnds, _mailcontact ) {
   if(_date != null ){
     newRows+="<tr><th>Fecha de primer cobro:</th><td> "+_date+"</td></tr>";
   }
+  newRows+="<tr><th>Pago de mi tanda:</th><td> "+usrPayDate+"</td></tr>";
   if(_payFreq != null &&  _chrg != null){
   }
-  newRows+="<tr><th>"+_payFreq+" Pago:</th><td> "+_chrg+" MXN</td></tr>";
+  newRows+="<tr><th>Pago "+_payFreq+":</th><td> "+_chrg+" MXN</td></tr>";
   if(_frnds != null ){
     newRows+="<tr><th>Participantes necesarios:</th><td> "+_frnds+"</td></tr>";
   }
