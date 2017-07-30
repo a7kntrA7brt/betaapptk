@@ -202,6 +202,7 @@ $(document).on("pageshow","#tandaspage",function() {
       var stat = true;
 
       $( "#penInvtedTandas" ).empty( );
+      $( "#penInvtedrequestTandas" ).empty( );
 
       var usrEmail = window.localStorage.getItem("usrEmail");
       var usrPass = window.localStorage.getItem("usrPass");
@@ -248,6 +249,51 @@ $(document).on("pageshow","#tandaspage",function() {
               }
             } /*  success: function(result..*/
             });
+$.ajax({
+  type: "GET",
+  url: "http://tandaklub.com/get/myproposalsrequests?e="+usrEmail+"&p="+usrPass+"",
+  crossDomain: true,
+  cache: false,
+  dataType: 'json',
+  success: function(result) {
+    if (result.st == 0) {
+      /*TODO:Currently only one error type, add more warnings when available*/
+      if(result.err[0] == "NotFound") {
+        $( "#invitewarningPlaceHolder" ).empty();
+        $( "#invitewarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+        $('#invitewarningPlaceHolder').show();
+      }
+    }
+    else {
+      if (result.list.length != 0) {
+        var content ="";
+        for(var i = 0; i < result.list.length; i++) {
+          moneyPot = result.list[i].pot;
+          fstdate = result.list[i].start;
+          pot_frequency = result.list[i].pot_frequency;
+          charge = result.list[i].charge;
+          tname = result.list[i].name;
+          req_name = result.list[i].req_name;
+          req_id = result.list[i].req_id;
+          poolId = result.list[i].id;
+          if( moneyPot != null && fstdate != null &&  pot_frequency != null && charge != null  && tname != null){
+            pot_frequency = freq2string(pot_frequency);
+            var headstring="<h4 class='headerboxed'>"+req_name+"</h4>";
+            var infostring="<p>"+tname+"</p><p>Tanda: "+moneyPot+"MXN</p><p>Frequencia:"+pot_frequency+"</p><p>Comienza: "+fstdate+"</p>"
+            var link =  "<a href='TandaRequests.html?poolId="+poolId+"&type=frndrqst&req_id="+req_id+"' rel='external'>Mayor Informacion</a>"
+            content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+          }
+        }/*for(var i = 0...*/
+          $( "#penInvtedrequestTandas" ).append( content );
+        }/* if (result.list.length != 0)*/
+        else {
+          $( "#penInvtedrequestTandas" ).append( "<p class='singleboxed'>No hay nuevas Invitaciones</p>" );
+        }
+      }
+    } /*  success: function(result..*/
+    });
+
+
           }/*if (usrEmail != null && us...)*/
           else {
             /*Should not fall in this else*/
@@ -263,7 +309,7 @@ $(document).on("pageshow","#tandaspage",function() {
           var usrEmail = window.localStorage.getItem("usrEmail");
 
         $( "#frndList" ).empty( );
-        
+
         $.ajax({
           type: "GET",
           url: "http://tandaklub.com/get/friends?e="+usrEmail+"&p="+usrPass+"",

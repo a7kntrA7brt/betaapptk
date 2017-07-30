@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>InvitationSearch</title>
+  <link rel="stylesheet" href="css/tandaklub.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.icons.min.css" />
+  <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+ <script type="text/javascript" src="js/commonFunctions.js"></script>
+  <script type="text/javascript" src="js/invitationsearch.js"></script>
+  <style type="text/css">
+  .headerboxed {
+    border: 1px solid rgb(135, 228, 231);
+    background-color: rgb(215, 250, 251);
+    width: 75%;
+    margin: 0 auto;
+    padding: 10px 0px 5px 10px;
+  }
+  .boxed {
+    border: 1px solid rgb(215, 250, 251);
+     background-color: rgb(237, 254, 255);
+     width: 75%;
+     margin: 0 auto;
+     padding: 0px 0px 5px 10px;
+  }
+  .singleboxed {
+    border: 1px solid rgb(215, 250, 251);
+     background-color: rgb(237, 254, 255);
+     width: 75%;
+     margin: 0 auto;
+     padding: 20px 0px 20px 20px;
+  }
+  </style>
+</head>
+<body>
+  <div data-role="page" id="invitationSearch" >
+    <div data-role="header">
+      <h1>TandaKlub</h1>
+      <a href="main.html" rel="external" role="button"  class="ui-btn-right"  data-icon="home" data-iconpos="notext" data-position="right"></a>
+      <a href="#nav-panel" data-icon="bars" data-iconpos="notext">Menu</a>
+    </div>
+    <br>
+    <div data-role="main" class="ui-content">
+      <h3>Tandas Disponibles de Amigos:</h3>
+      <div id="invitationsInfo"></div>
+    </div>
+  </div>
+
+  <div data-role="panel" data-display="reveal" id="nav-panel">
+      <ul data-role="listview">
+          <li data-icon="delete"><a href="#profile" data-rel="close">Close menu</a></li>
+          <li><a href="userprofile.html" rel="external">Profile</a></li>
+          <li><a href="settings.html" rel="external">Settings</a></li>
+      </ul>
+  </div><!-- /panel -->
+
+</body>
+</html>
