@@ -82,4 +82,17 @@ $("#submitlogin").click(function()
 });
 
 
+$("#facebooklogin").click(function()
+{
+  var fbLoginSuccess = function (userData) {
+    console.log("UserInfo: ", userData);
+  }
+
+  facebookConnectPlugin.login(["public_profile"], fbLoginSuccess,
+    function loginError (error) {
+      console.error(error)
+    }
+  );
+});
+
 });

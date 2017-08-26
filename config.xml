@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>betaTKapp</name>
+    <name>TandaKlub</name>
     <description>
         Hello World sample application that responds to the deviceready event.
     </description>
@@ -114,4 +114,8 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <plugin name="cordova-plugin-facebook4" spec="~1.9.1">
+        <variable name="APP_ID" value="238891783300293" />
+        <variable name="APP_NAME" value="TandaKlub" />
+    </plugin>
 </widget>

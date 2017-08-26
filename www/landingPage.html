@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/landingpage.js"></script>
   </head>
   <body>
@@ -33,7 +34,8 @@
         </div>
 
         <p>Login con:</p>
-          <a href="#" class="custom-btn ui-btn ui-mini ui-shadow">Facebook</a>
+
+          <button type="button" class="custom-btn ui-mini ui-shadow ui-btn-corner-all" data-mini="true" data-inline="false" id="facebooklogin">Facebook</button>
           <div data-role="fieldcontain" data-type="horizontal" data-inline="true" display="inline-block">
              <p data-inline="true">Eres nuevo a TandaKlub?</p>
              <a href="registerUser.html" rel="external" data-position="right">Registrate aqui</a>

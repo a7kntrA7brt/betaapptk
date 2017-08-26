@@ -71,7 +71,7 @@ $(document).on("pageshow","#invitationSearch",function() {
                      }/* if (result.list.length != 0)*/
                      else{
                         content="<p class='singleboxed'>No hay propuestas dispibles</p>";
-                        $( "#invitationsInfo" ).append( content );
+                      $( "#invitationsInfo" ).append( content );
                      }
                    }
 
@@ -79,6 +79,7 @@ $(document).on("pageshow","#invitationSearch",function() {
                  });
 
            }/*for(var i = 0...*/
+
 
            }/* if (result.list.length != 0)*/
            else {

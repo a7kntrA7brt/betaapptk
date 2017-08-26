@@ -13,12 +13,138 @@ $('#frndsdwarningPlaceHolder').hide();
 
 
 
-$(document).on("pageshow","#newsfeedpage",function() {
 
+$(document).on("pageshow","#newsfeedpage",function() {
   var usrEmail = window.localStorage.getItem("usrEmail");
   var usrPass = window.localStorage.getItem("usrPass");
+  var usrId = window.localStorage.getItem("usrId");
 
-  });
+  $("#newsfeedinfo").empty( );
+
+  $.ajax({
+    type: "GET",
+    url: "http://tandaklub.com/get/feed?e="+usrEmail+"&p="+usrPass+"",
+    crossDomain: true,
+    cache: false,
+    dataType: 'json',
+    success: function(result) {
+      if (result.st == 0) {
+        /*TODO:Currently only one error type, add more warnings when available*/
+        if(result.err[0] == "NotFound") {
+          $( "#newswarningPlaceHolder" ).empty();
+          $( "#newswarningPlaceHolder" ).append( "<a href='#' class='ui-btn ui-btn-icon-right ui-icon-alert ui-state-disabled' data-inline='true' data-mini='true'>No hay informacion</a>" );
+          $('#newswarningPlaceHolder').show();
+        }
+      }
+      else {
+        if (result.list.length != 0) {
+            var content ="";
+          for(var i = 0; i < result.list.length; i++) {
+            //var content=""
+            ftype = result.list[i].type;
+            fstat = result.list[i].status;
+            fdate = result.list[i].date;
+            if( ftype != null && fstat != null && fdate != null  ){
+              if (ftype=="5") {
+                /*Check if invited to this proposal*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+                moneyPot = result.list[i].pot;
+                if(moneyPot != null){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Has sido invitado una nueva tanda de "+moneyPot+"</p>";
+                    var link =  "<a href='joinTanda.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 5)*/
+              if (ftype=="8") {
+                /*Check if there is a newly created tanda from friend*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+                moneyPot = result.list[i].pot;
+                if(moneyPot != null){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Se ha creado una nueva tanda de "+moneyPot+"</p>";
+                    var link =  "<a href='TandaRequests.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 8)*/
+              if (ftype=="3") {
+                /*Check if user created a proposal*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+                moneyPot = result.list[i].pot;
+                if(moneyPot != null){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Has creado una tanda de "+moneyPot+"</p>";
+                    var link =  "<a href='tandaInfo.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 3)*/
+              if (ftype=="4") {
+                /*Check if user created a proposal*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+
+                if(result.list[i].creator_id != usrId ){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p>"+result.list[i].creator_name +" ha aceptado participar en tu tanda</p>";
+                    var link =  "<a href='tandaInfo.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+                else{
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Has aceptado participar en una tanda</p>";
+                    var link =  "<a href='tandaInfo.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 4)*/
+              if (ftype=="9") {
+                /*Check if user created a proposal*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+                if(result.list[i].creator_id != usrId ){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p>"+result.list[i].creator_name +" ha pedido participar en tu tanda</p>";
+                    var link =  "<a href='TandaRequests.html?poolId="+fproposal_id +"&type=frndrqst' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+                else{
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Has pedido participar en una tanda</p>";
+                    var link =  "<a href='tandaInfo.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 9)*/
+              if (ftype=="10") {
+                /*Check if user created a proposal*/
+                fproposal_id = result.list[i].id_proposal;
+                //var content ="";
+                if(result.list[i].creator_id != usrId ){
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p>"+result.list[i].creator_name +" ha aceptado que te unas a la tanda</p>";
+                    var link =  "<a href='joinTanda.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+                else{
+                    var headstring="<h4 class='headerboxed'>Nueva Tanda</h4>";
+                    var infostring="<p> Has aceptado nuevo participante en una tanda</p>";
+                    var link =  "<a href='tandaInfo.html?poolId="+fproposal_id +"&type=p' rel='external'>Mayor Informacion</a>"
+                    content+= headstring+"<div class='boxed'>"+infostring+link+"</div><br>";
+                }
+              }/* if (ftype == 9)*/
+            }/*if( ftype != null && fstat*/
+          } /*for(var i = 0; i < result*/
+           $( "#newsfeedinfo" ).append( content );
+         }/*if (result.list.length != 0*/
+         else {
+            $( "#newsfeedinfo" ).append("<p class='singleboxed'>No hay Noticias</p>");
+         }
+        }/*else*/
+      }/* function(result) */
+  }); /*Request for Feed*/
+});
+
 
 /*Get all Tandas that are Active
 that User participates in */
@@ -327,10 +453,11 @@ $.ajax({
               tkfrndcnt = result.list.length;
               if (result.list.length != 0) {
                 var content ="";
+                var newRows = "";
                 for(var i = 0; i < result.list.length; i++) {
                   tname = result.list[i].name;
                   tmail = result.list[i].email;
-                    var newRows= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
+                    newRows+= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
                     "<label for='checkbox"+i+"' style='display:inline'>"+tname+"</label>";
                 }/*for(var i = 0...*/
                   content+= "<h4>Amigos de TandaKlub</h4>"+newRows;

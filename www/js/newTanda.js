@@ -393,10 +393,11 @@ $(document).on("pageshow","#friends",function() {
         tkfrndcnt = result.list.length;
         if (result.list.length != 0) {
           var content ="";
+          var newRows ="";
           for(var i = 0; i < result.list.length; i++) {
             tname = result.list[i].name;
             tmail = result.list[i].email;
-              var newRows= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
+              newRows+= "<input type='checkbox' name='checkbox"+i+"' id='checkbox"+i+"'>"+
               "<label for='checkbox"+i+"' style='display:inline'>"+tname+"</label>";
               tkfrndlist[i]=tmail;
           }/*for(var i = 0...*/
