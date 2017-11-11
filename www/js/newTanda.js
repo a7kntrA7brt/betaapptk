@@ -590,9 +590,24 @@ $( "#fnshcrt" ).click( function() {
                  success: function(data) {
                    if (data.st == 1)
                    {
-                          $.mobile.loading( "hide" );
-                          window.location.href="main.html";
-                          window.location.href.reload(true);
+                        facebookConnectPlugin.getLoginStatus(function onLoginStatus (status) {
+                            console.log("current status: ", status);
+                            facebookConnectPlugin.showDialog({
+                                method: "share",
+                                href: "http://tandaklub.com",
+                                caption: "Demo feed Info.",
+                                description: "Much description here:"+message,
+                            }, function onShareSuccess (result) {
+                                console.log("Posted. ", result);
+                            }, function onShareFail (result) {
+                                console.log("Post Fail. ", result);
+                            }
+                          );
+                        });
+
+                        //  $.mobile.loading( "hide" );
+                        //  window.location.href="main.html";
+                        //  window.location.href.reload(true);
                    }
                  }
                  });

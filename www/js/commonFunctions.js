@@ -80,11 +80,39 @@ function poolMemStat2String(status)
   return status;
 }
 
+ function setLocalStorage (id, eMail, password)
+ {
+     window.localStorage.setItem("usrId", id);
+     window.localStorage.setItem("usrEmail", eMail);
+     window.localStorage.setItem("usrPass", password);
+ }
 
- function logOut() {
+ function getLocalId()
+ {
+     return window.localStorage.getItem("usrId");
+ }
+
+ function getLocalEmail()
+ {
+     return window.localStorage.getItem("usrEmail");
+ }
+
+ function getLocalPass()
+ {
+     return window.localStorage.getItem("usrPass");
+ }
+
+function deleteLocalStorage()
+{
    window.localStorage.removeItem("usrEmail");
    window.localStorage.removeItem("usrPass");
    window.localStorage.removeItem("usrId");
+}
+
+ function logOut()
+ {
+    deleteLocalStorage()
+    facebookConnectPlugin.logout(null, null);
     window.location.href="landingPage.html";
     window.location.href.reload(true);
   }
